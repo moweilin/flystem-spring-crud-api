@@ -1,13 +1,18 @@
+import org.gradle.api.credentials.HttpHeaderCredentials
+import org.gradle.authentication.http.HttpHeaderAuthentication
+
 plugins {
     `java-library`
     `maven-publish`
 }
 
-// 独立构建（JitPack / 单独 clone）：Gitee 坐标 com.gitee.moweilin:flystem-spring-crud-api
-// monorepo 子模块：沿用父仓 allprojects 的 group / version（com.flystem）
+// 独立构建：Gitee Maven 包坐标 com.flystem:flystem-spring-crud-api
+// monorepo 子模块：沿用父仓 allprojects 的 group / version
 if (rootProject == project) {
-    group = "com.gitee.moweilin"
-    version = System.getenv("VERSION") ?: "0.1.0-SNAPSHOT"
+    group = "com.flystem"
+    version = System.getenv("VERSION")
+        ?: findProperty("version")?.toString()?.takeIf { it != "unspecified" }
+        ?: "0.1.0"
 }
 
 java {
@@ -22,7 +27,6 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.withType<Javadoc>().configureEach {
     options.encoding = "UTF-8"
-    // compileOnly 类型在部分环境未解析时不要拖垮 publish
     isFailOnError = false
 }
 
@@ -51,14 +55,53 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
-// 发布到 mavenLocal：monorepo 样例 / Maven 插件解析（协议 §6）；JitPack 亦据此安装
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
-            // 独立构建时 artifactId 已是 rootProject.name；显式固定以免目录改名漂移
+            pom {
+                name.set("flystem-spring-crud-api")
+                description.set("flystem-spring-crud public API and runtime support types")
+                url.set("https://gitee.com/moweilin/flystem-spring-crud-api")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                scm {
+                    url.set("https://gitee.com/moweilin/flystem-spring-crud-api")
+                    connection.set("scm:git:https://gitee.com/moweilin/flystem-spring-crud-api.git")
+                }
+            }
             if (rootProject == project) {
                 artifactId = "flystem-spring-crud-api"
+            }
+        }
+    }
+    repositories {
+        // 默认：写入本仓 repo/，push 后经 Gitee raw 作为 Maven 仓库消费
+        maven {
+            name = "GiteeMaven"
+            url = uri(rootProject.layout.projectDirectory.dir("repo"))
+        }
+        // 可选：企业版 / 已开通 Packages 时，设置 GITEE_MAVEN_URL + GITEE_TOKEN 直推
+        // 例：GITEE_MAVEN_URL=https://gitee.com/api/packages/moweilin/maven
+        val giteeUrl = System.getenv("GITEE_MAVEN_URL")
+            ?: findProperty("gitee.maven.url")?.toString()
+        val giteeToken = System.getenv("GITEE_TOKEN")
+            ?: findProperty("gitee.token")?.toString()
+        if (!giteeUrl.isNullOrBlank() && !giteeToken.isNullOrBlank()) {
+            maven {
+                name = "GiteePackages"
+                url = uri(giteeUrl)
+                credentials(HttpHeaderCredentials::class) {
+                    name = "Authorization"
+                    value = "token $giteeToken"
+                }
+                authentication {
+                    create<HttpHeaderAuthentication>("header")
+                }
             }
         }
     }

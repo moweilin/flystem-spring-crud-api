@@ -1,0 +1,100 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.flystem",
+    "module": "flystem-spring-crud-api",
+    "version": "0.1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.4.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "flystem-spring-crud-api-0.1.0.jar",
+          "url": "flystem-spring-crud-api-0.1.0.jar",
+          "size": 70756,
+          "sha512": "8245669309942d02334b6d0d86b4132cf71ce9587609be10a9d3fa214969bf2ab7796a4f73b4889f1335fb4e6d4bbc1791bd2cfd989dddbf64f56edef2298046",
+          "sha256": "e9334d014d9f963ff1b2eef1f3f2fe3e6b7af17dabe15141eedc238e68988ad2",
+          "sha1": "3c8e1be82fa0ba26753cd31bb7ace9997e694551",
+          "md5": "fcdbfd4f16f804eed59c5671fd02a7a5"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "flystem-spring-crud-api-0.1.0.jar",
+          "url": "flystem-spring-crud-api-0.1.0.jar",
+          "size": 70756,
+          "sha512": "8245669309942d02334b6d0d86b4132cf71ce9587609be10a9d3fa214969bf2ab7796a4f73b4889f1335fb4e6d4bbc1791bd2cfd989dddbf64f56edef2298046",
+          "sha256": "e9334d014d9f963ff1b2eef1f3f2fe3e6b7af17dabe15141eedc238e68988ad2",
+          "sha1": "3c8e1be82fa0ba26753cd31bb7ace9997e694551",
+          "md5": "fcdbfd4f16f804eed59c5671fd02a7a5"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "flystem-spring-crud-api-0.1.0-sources.jar",
+          "url": "flystem-spring-crud-api-0.1.0-sources.jar",
+          "size": 94573,
+          "sha512": "0c648716faf9272361cebbfe7e19d6059dee6e9c25a8e08148fdb4f9021e63cc3e21cb2adc9c60c9d9bb7f9bd0ccec8ebda0a5cc56f31e65330bfce1d19f9f01",
+          "sha256": "c94f2d7ba1be83085c8977d50e844b7a4ea98fe3d9176cc840081243f43fa6a1",
+          "sha1": "33c10ed733ee38ae2df0f3539b4c38f452a58df4",
+          "md5": "84d69a3e58911b6845a678e0e88979ca"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "flystem-spring-crud-api-0.1.0-javadoc.jar",
+          "url": "flystem-spring-crud-api-0.1.0-javadoc.jar",
+          "size": 396230,
+          "sha512": "74b1e22d5b191213c228556ef9e5cae51098a60afebc9d63d03e7a8c7de3399b9489ee5e6bea986dac6a2880e656a716ff9949013de9c9100453e4a004a77c0f",
+          "sha256": "80f733c52d17dbbb606dd632d64203ffdcdbb6f08e8194d73555b8b86ac250db",
+          "sha1": "6a3a2bd667a16d44730a13673de195c167431381",
+          "md5": "2aef85e51f72297500536cf13aff660e"
+        }
+      ]
+    }
+  ]
+}
