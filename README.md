@@ -1,6 +1,6 @@
 # flystem-spring-crud-api
 
-[![JitPack](https://jitpack.io/v/moweilin/flystem-spring-crud-api.svg)](https://jitpack.io/#moweilin/flystem-spring-crud-api)
+[![JitPack](https://www.jitpack.io/v/moweilin/flystem-spring-crud-api.svg)](https://www.jitpack.io/#moweilin/flystem-spring-crud-api)
 
 公共契约与运行期支撑类型（ADR 0012：Java 17 字节码，仅引用 Boot 3/4 两代最低公共 API）。
 包根 `com.flystem.crud.api`，分 `annotation` / `enums` / `tenant` / `factory` / `page` / `meta` / `wrap` / `io` / `task` / `autoconfigure` 十个子包：
@@ -41,14 +41,14 @@ JitPack 从 **GitHub** 构建（Gitee 镜像易超时），坐标：
 
 ### Gradle
 
-`settings.gradle.kts`（**必须**声明 `jitpack.io`，阿里云等国内镜像不会代理它）：
+`settings.gradle.kts`（**必须**声明 `www.jitpack.io`，阿里云等国内镜像不会代理它）：
 
 ```kotlin
 dependencyResolutionManagement {
     repositories {
         maven(url = "https://maven.aliyun.com/repository/public")
         mavenCentral()
-        maven(url = "https://jitpack.io")
+        maven(url = "https://www.jitpack.io")
     }
 }
 ```
@@ -67,7 +67,7 @@ dependencies {
 <repositories>
   <repository>
     <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
+    <url>https://www.jitpack.io</url>
   </repository>
 </repositories>
 
@@ -78,7 +78,7 @@ dependencies {
 </dependency>
 ```
 
-首次引用前可在 [JitPack Look up](https://jitpack.io/#moweilin/flystem-spring-crud-api) 触发构建。
+首次引用前可在 [JitPack Look up](https://www.jitpack.io/#moweilin/flystem-spring-crud-api) 触发构建。
 
 ## 本地构建
 
