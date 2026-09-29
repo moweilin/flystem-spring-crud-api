@@ -32,8 +32,8 @@
 
 ## 安装（JitPack / GitHub）
 
-源码同步：[Gitee](https://gitee.com/moweilin/flystem-spring-crud-api) · [GitHub](https://github.com/moweilin/flystem-spring-crud-api)。  
-JitPack 从 **GitHub** 构建（Gitee 镜像易超时），坐标：
+源码：[GitHub](https://github.com/moweilin/flystem-spring-crud-api)（亦同步 [Gitee](https://gitee.com/moweilin/flystem-spring-crud-api)）。  
+JitPack 从 **GitHub** 构建，坐标：
 
 `com.github.moweilin:flystem-spring-crud-api:<Tag|commit|master-SNAPSHOT>`
 
