@@ -1,0 +1,16 @@
+# 独立构建（JitPack / 本仓单独 clone）用的精简版本目录。
+# 作为 monorepo 子模块被 include 时，由父仓 gradle/libs.versions.toml 提供同名别名。
+
+[versions]
+jackson = "2.18.2"
+junit = "5.11.4"
+junitPlatform = "1.11.4"
+springSecurity = "6.5.10"
+springBoot = "3.5.6"
+
+[libraries]
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junitPlatform" }
+spring-security-core = { module = "org.springframework.security:spring-security-core", version.ref = "springSecurity" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBoot" }

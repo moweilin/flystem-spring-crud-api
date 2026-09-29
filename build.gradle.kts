@@ -3,8 +3,31 @@ plugins {
     `maven-publish`
 }
 
+// 独立构建（JitPack / 单独 clone）：Gitee 坐标 com.gitee.moweilin:flystem-spring-crud-api
+// monorepo 子模块：沿用父仓 allprojects 的 group / version（com.flystem）
+if (rootProject == project) {
+    group = "com.gitee.moweilin"
+    version = System.getenv("VERSION") ?: "0.1.0-SNAPSHOT"
+}
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType<Javadoc>().configureEach {
+    options.encoding = "UTF-8"
+    // compileOnly 类型在部分环境未解析时不要拖垮 publish
+    isFailOnError = false
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -28,11 +51,15 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
-// 发布到 mavenLocal 供 Maven 集成模块与样例解析（协议 §6）
+// 发布到 mavenLocal：monorepo 样例 / Maven 插件解析（协议 §6）；JitPack 亦据此安装
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
+            // 独立构建时 artifactId 已是 rootProject.name；显式固定以免目录改名漂移
+            if (rootProject == project) {
+                artifactId = "flystem-spring-crud-api"
+            }
         }
     }
 }

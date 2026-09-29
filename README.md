@@ -1,5 +1,7 @@
 # flystem-spring-crud-api
 
+[![JitPack](https://jitpack.io/v/com.gitee.moweilin/flystem-spring-crud-api.svg)](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api)
+
 公共契约与运行期支撑类型（ADR 0012：Java 17 字节码，仅引用 Boot 3/4 两代最低公共 API）。
 包根 `com.flystem.crud.api`，分 `annotation` / `enums` / `tenant` / `factory` / `page` / `meta` / `wrap` / `io` / `task` / `autoconfigure` 十个子包：
 
@@ -27,3 +29,59 @@
 使用方的编译依赖仅此一个模块（ADR 0008）。端点是否用统一结果类包装，由 `@ControllerGeneration.resultWrapper` 配置（默认 `Void.class` = **不包装**；非 Void 须实现 `ResultWrapper` SPI，ADR 0020）。IMPORT / EXPORT 则**恒为异步任务**（不可配，ADR 0022），故运行期总需要一个 `task.CrudTaskManager` bean——Boot 项目由本模块的自动配置给默认的内存实现，非 Boot 的纯 Spring 项目须自行声明（同 `ImportParser` / `ExportWriter` 的约定）。注意与"api 产物"（生成结果的接口侧）区分，见 `CONTEXT.md`。
 
 状态：首批契约已落地（work-breakdown #1，含默认租户提供器单元测试）。配置的字节码读取与解析生效在 work-breakdown #4 / #5，运行期装配（provider 加载与替换、ServiceFactory 纳入 Spring 上下文）在 #8。
+
+## 安装（JitPack / Gitee）
+
+本仓托管于 [Gitee](https://gitee.com/moweilin/flystem-spring-crud-api)，经 [JitPack](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api) 按需构建。坐标：
+
+`com.gitee.moweilin:flystem-spring-crud-api:<Tag|commit|master-SNAPSHOT>`
+
+### Gradle
+
+`settings.gradle.kts`：
+
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven(url = "https://jitpack.io")
+    }
+}
+```
+
+模块依赖：
+
+```kotlin
+dependencies {
+    implementation("com.gitee.moweilin:flystem-spring-crud-api:master-SNAPSHOT")
+}
+```
+
+### Maven
+
+```xml
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+
+<dependency>
+  <groupId>com.gitee.moweilin</groupId>
+  <artifactId>flystem-spring-crud-api</artifactId>
+  <version>master-SNAPSHOT</version>
+</dependency>
+```
+
+发布正式版时在本仓打 Git tag（如 `v0.1.0`），将上述版本换成该 tag。首次引用前可在 [JitPack](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api) Look up 触发构建；Gitee 私有仓需在 JitPack 绑定 Gitee token。
+
+## 本地构建
+
+独立 clone 时使用本仓 Gradle Wrapper（发行包走腾讯云镜像，依赖走阿里云 Maven）：
+
+```bash
+./gradlew publishToMavenLocal
+```
+
+作为 [flystem-spring-crud](https://gitee.com/moweilin/flystem-spring-crud) 子模块时，仍由父构建 `include`，group 为 `com.flystem`。
