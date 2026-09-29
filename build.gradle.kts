@@ -1,18 +1,13 @@
-import org.gradle.api.credentials.HttpHeaderCredentials
-import org.gradle.authentication.http.HttpHeaderAuthentication
-
 plugins {
     `java-library`
     `maven-publish`
 }
 
-// 独立构建：Gitee Maven 包坐标 com.flystem:flystem-spring-crud-api
-// monorepo 子模块：沿用父仓 allprojects 的 group / version
+// 独立构建（JitPack）：坐标 com.gitee.moweilin:flystem-spring-crud-api
+// monorepo 子模块：沿用父仓 allprojects 的 group / version（com.flystem）
 if (rootProject == project) {
-    group = "com.flystem"
-    version = System.getenv("VERSION")
-        ?: findProperty("version")?.toString()?.takeIf { it != "unspecified" }
-        ?: "0.1.0"
+    group = "com.gitee.moweilin"
+    version = System.getenv("VERSION") ?: "0.1.0-SNAPSHOT"
 }
 
 java {
@@ -55,53 +50,13 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
+// JitPack / 本地：publishToMavenLocal；JitPack 构建时自动调用
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
-            pom {
-                name.set("flystem-spring-crud-api")
-                description.set("flystem-spring-crud public API and runtime support types")
-                url.set("https://gitee.com/moweilin/flystem-spring-crud-api")
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                scm {
-                    url.set("https://gitee.com/moweilin/flystem-spring-crud-api")
-                    connection.set("scm:git:https://gitee.com/moweilin/flystem-spring-crud-api.git")
-                }
-            }
             if (rootProject == project) {
                 artifactId = "flystem-spring-crud-api"
-            }
-        }
-    }
-    repositories {
-        // 默认：写入本仓 repo/，push 后经 Gitee raw 作为 Maven 仓库消费
-        maven {
-            name = "GiteeMaven"
-            url = uri(rootProject.layout.projectDirectory.dir("repo"))
-        }
-        // 可选：企业版 / 已开通 Packages 时，设置 GITEE_MAVEN_URL + GITEE_TOKEN 直推
-        // 例：GITEE_MAVEN_URL=https://gitee.com/api/packages/moweilin/maven
-        val giteeUrl = System.getenv("GITEE_MAVEN_URL")
-            ?: findProperty("gitee.maven.url")?.toString()
-        val giteeToken = System.getenv("GITEE_TOKEN")
-            ?: findProperty("gitee.token")?.toString()
-        if (!giteeUrl.isNullOrBlank() && !giteeToken.isNullOrBlank()) {
-            maven {
-                name = "GiteePackages"
-                url = uri(giteeUrl)
-                credentials(HttpHeaderCredentials::class) {
-                    name = "Authorization"
-                    value = "token $giteeToken"
-                }
-                authentication {
-                    create<HttpHeaderAuthentication>("header")
-                }
             }
         }
     }

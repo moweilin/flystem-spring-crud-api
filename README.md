@@ -1,5 +1,7 @@
 # flystem-spring-crud-api
 
+[![JitPack](https://jitpack.io/v/com.gitee.moweilin/flystem-spring-crud-api.svg)](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api)
+
 公共契约与运行期支撑类型（ADR 0012：Java 17 字节码，仅引用 Boot 3/4 两代最低公共 API）。
 包根 `com.flystem.crud.api`，分 `annotation` / `enums` / `tenant` / `factory` / `page` / `meta` / `wrap` / `io` / `task` / `autoconfigure` 十个子包：
 
@@ -28,26 +30,24 @@
 
 状态：首批契约已落地（work-breakdown #1，含默认租户提供器单元测试）。配置的字节码读取与解析生效在 work-breakdown #4 / #5，运行期装配（provider 加载与替换、ServiceFactory 纳入 Spring 上下文）在 #8。
 
-## 安装（Gitee Maven 包）
+## 安装（JitPack / Gitee）
 
-本仓托管于 [Gitee](https://gitee.com/moweilin/flystem-spring-crud-api)。发布产物落在仓库根目录 `repo/`（标准 Maven 布局），经 Gitee raw 地址消费。
+本仓托管于 [Gitee](https://gitee.com/moweilin/flystem-spring-crud-api)，经 [JitPack](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api) 按需构建。坐标：
 
-坐标：`com.flystem:flystem-spring-crud-api:0.1.0`
+`com.gitee.moweilin:flystem-spring-crud-api:<Tag|commit|master-SNAPSHOT>`
 
-仓库 URL：
-
-`https://gitee.com/moweilin/flystem-spring-crud-api/raw/master/repo`
+推荐版本：`master-SNAPSHOT`（跟 master），或已打的 Git tag（如 `v0.1.0`）。
 
 ### Gradle
 
-`settings.gradle.kts`（国内镜像 + Gitee Maven；**必须**单独声明本仓，阿里云不会代理它）：
+`settings.gradle.kts`（**必须**声明 `jitpack.io`，阿里云等国内镜像不会代理它）：
 
 ```kotlin
 dependencyResolutionManagement {
     repositories {
         maven(url = "https://maven.aliyun.com/repository/public")
         mavenCentral()
-        maven(url = "https://gitee.com/moweilin/flystem-spring-crud-api/raw/master/repo")
+        maven(url = "https://jitpack.io")
     }
 }
 ```
@@ -56,7 +56,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.flystem:flystem-spring-crud-api:0.1.0")
+    implementation("com.gitee.moweilin:flystem-spring-crud-api:master-SNAPSHOT")
 }
 ```
 
@@ -65,35 +65,19 @@ dependencies {
 ```xml
 <repositories>
   <repository>
-    <id>gitee-flystem-api</id>
-    <url>https://gitee.com/moweilin/flystem-spring-crud-api/raw/master/repo</url>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
   </repository>
 </repositories>
 
 <dependency>
-  <groupId>com.flystem</groupId>
+  <groupId>com.gitee.moweilin</groupId>
   <artifactId>flystem-spring-crud-api</artifactId>
-  <version>0.1.0</version>
+  <version>master-SNAPSHOT</version>
 </dependency>
 ```
 
-### 发布新版本（维护者）
-
-```bash
-# 可选：VERSION=0.1.1 ./gradlew publish
-./gradlew publish -x test
-git add repo
-git commit -m "publish com.flystem:flystem-spring-crud-api:<version>"
-git push origin master
-```
-
-若已开通 Gitee Packages（企业版等），可改直推远程仓库：
-
-```bash
-export GITEE_MAVEN_URL=https://gitee.com/api/packages/moweilin/maven
-export GITEE_TOKEN=<私人令牌>
-./gradlew publish -x test
-```
+首次引用前可在 [JitPack Look up](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api) 触发构建。若 Look up / 构建报 Gitee 超时，在 JitPack 账号设置中绑定 Gitee 私人令牌后再试；或改用具体 commit 短哈希作版本。
 
 ## 本地构建
 
