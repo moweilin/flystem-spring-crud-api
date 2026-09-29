@@ -3,10 +3,10 @@ plugins {
     `maven-publish`
 }
 
-// 独立构建（JitPack）：坐标 com.gitee.moweilin:flystem-spring-crud-api
+// 独立构建（JitPack / GitHub）：坐标 com.github.moweilin:flystem-spring-crud-api
 // monorepo 子模块：沿用父仓 allprojects 的 group / version（com.flystem）
 if (rootProject == project) {
-    group = "com.gitee.moweilin"
+    group = "com.github.moweilin"
     version = System.getenv("VERSION") ?: "0.1.0-SNAPSHOT"
 }
 

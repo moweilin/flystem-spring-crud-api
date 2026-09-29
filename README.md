@@ -1,6 +1,6 @@
 # flystem-spring-crud-api
 
-[![JitPack](https://jitpack.io/v/com.gitee.moweilin/flystem-spring-crud-api.svg)](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api)
+[![JitPack](https://jitpack.io/v/moweilin/flystem-spring-crud-api.svg)](https://jitpack.io/#moweilin/flystem-spring-crud-api)
 
 公共契约与运行期支撑类型（ADR 0012：Java 17 字节码，仅引用 Boot 3/4 两代最低公共 API）。
 包根 `com.flystem.crud.api`，分 `annotation` / `enums` / `tenant` / `factory` / `page` / `meta` / `wrap` / `io` / `task` / `autoconfigure` 十个子包：
@@ -30,13 +30,14 @@
 
 状态：首批契约已落地（work-breakdown #1，含默认租户提供器单元测试）。配置的字节码读取与解析生效在 work-breakdown #4 / #5，运行期装配（provider 加载与替换、ServiceFactory 纳入 Spring 上下文）在 #8。
 
-## 安装（JitPack / Gitee）
+## 安装（JitPack / GitHub）
 
-本仓托管于 [Gitee](https://gitee.com/moweilin/flystem-spring-crud-api)，经 [JitPack](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api) 按需构建。坐标：
+源码同步：[Gitee](https://gitee.com/moweilin/flystem-spring-crud-api) · [GitHub](https://github.com/moweilin/flystem-spring-crud-api)。  
+JitPack 从 **GitHub** 构建（Gitee 镜像易超时），坐标：
 
-`com.gitee.moweilin:flystem-spring-crud-api:<Tag|commit|master-SNAPSHOT>`
+`com.github.moweilin:flystem-spring-crud-api:<Tag|commit|master-SNAPSHOT>`
 
-推荐版本：`master-SNAPSHOT`（跟 master），或已打的 Git tag（如 `v0.1.0`）。
+推荐：`master-SNAPSHOT`，或 Git tag（如 `v0.1.0`）。
 
 ### Gradle
 
@@ -56,7 +57,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.gitee.moweilin:flystem-spring-crud-api:master-SNAPSHOT")
+    implementation("com.github.moweilin:flystem-spring-crud-api:master-SNAPSHOT")
 }
 ```
 
@@ -71,13 +72,13 @@ dependencies {
 </repositories>
 
 <dependency>
-  <groupId>com.gitee.moweilin</groupId>
+  <groupId>com.github.moweilin</groupId>
   <artifactId>flystem-spring-crud-api</artifactId>
   <version>master-SNAPSHOT</version>
 </dependency>
 ```
 
-首次引用前可在 [JitPack Look up](https://jitpack.io/#com.gitee.moweilin/flystem-spring-crud-api) 触发构建。若 Look up / 构建报 Gitee 超时，在 JitPack 账号设置中绑定 Gitee 私人令牌后再试；或改用具体 commit 短哈希作版本。
+首次引用前可在 [JitPack Look up](https://jitpack.io/#moweilin/flystem-spring-crud-api) 触发构建。
 
 ## 本地构建
 
