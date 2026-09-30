@@ -1,5 +1,4 @@
-# 独立构建（JitPack / 本仓单独 clone）用的精简版本目录。
-# 作为 monorepo 子模块被 include 时，由父仓 gradle/libs.versions.toml 提供同名别名。
+# 独立构建（JitPack / 本仓单独 clone / 父仓 includeBuild）用的版本目录。
 
 [versions]
 jackson = "2.18.2"

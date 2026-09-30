@@ -2,6 +2,7 @@ package com.flystem.crud.api.annotation;
 
 import com.flystem.crud.api.enums.GenerationMode;
 import com.flystem.crud.api.enums.PackageLayout;
+import com.flystem.crud.api.id.IdGenerator;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -47,6 +48,12 @@ public @interface Domain {
 
     /** 命名前缀：全部产物层类名统一携带（如 {@code FUserService}），可置空串关闭（ADR 0016）。 */
     String prefix() default "F";
+
+    /**
+     * 主键生成器 bean 类型：默认 {@link Void} = 由框架 / 数据库自生成；配实现 {@link IdGenerator}
+     * 的类（或接口本身）时 create 路径注入并赋值（覆盖包级同名项，ADR 0026）。
+     */
+    Class<?> idGenerator() default Void.class;
 
     /**
      * 实体资源名：异步任务的 {@code entity} 字段、生成的 {@code {P}{E}Meta#ENTITY}、导出文件名主干、端点路径段共用。

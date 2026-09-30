@@ -1,6 +1,9 @@
 package com.flystem.crud.api.autoconfigure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flystem.crud.api.id.IdGenerator;
+import com.flystem.crud.api.id.UuidIdGenerator;
+import com.flystem.crud.api.id.UuidV7IdGenerator;
 import com.flystem.crud.api.io.ExportWriter;
 import com.flystem.crud.api.io.ImportParser;
 import com.flystem.crud.api.io.JsonExportWriter;
@@ -49,6 +52,40 @@ public class FlystemSpringCrudAutoConfiguration {
     @ConditionalOnMissingBean(RelationshipLoader.class)
     RelationshipLoader flystemRelationshipLoader(ObjectProvider<TypedLinkableLoader> loaders) {
         return new DefaultRelationshipLoader(loaders.stream().toList());
+    }
+
+    /**
+     * 主键生成（ADR 0026）：始终注册 {@link UuidIdGenerator}；{@link UuidV7IdGenerator} 仅在
+     * classpath 有 {@code UuidCreator} 时注册（嵌套配置 + {@code @ConditionalOnClass}，不内嵌
+     * v7 算法）。{@link IdGenerator} 接口 bean：有 v7 则优先，否则回落 v4。实体
+     * {@code idGenerator=Void}（默认）时这些 bean 闲置；配了实现类 / 接口时产物才注入。
+     */
+    @Bean
+    @ConditionalOnMissingBean(UuidIdGenerator.class)
+    UuidIdGenerator flystemUuidIdGenerator() {
+        return new UuidIdGenerator();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IdGenerator.class)
+    IdGenerator flystemIdGenerator(ObjectProvider<UuidV7IdGenerator> uuidV7,
+            UuidIdGenerator uuidIdGenerator) {
+        UuidV7IdGenerator v7 = uuidV7.getIfAvailable();
+        return v7 != null ? v7 : uuidIdGenerator;
+    }
+
+    /**
+     * UUID v7：依赖 uuid-creator 的 {@code UuidCreator}，缺类则本嵌套配置整块不加载。
+     */
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnClass(name = UuidV7IdGenerator.UUID_CREATOR_CLASS)
+    static class UuidV7IdGeneratorConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean(UuidV7IdGenerator.class)
+        UuidV7IdGenerator flystemUuidV7IdGenerator() {
+            return new UuidV7IdGenerator();
+        }
     }
 
     /**

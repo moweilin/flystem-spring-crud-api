@@ -3,12 +3,9 @@ plugins {
     `maven-publish`
 }
 
-// 独立构建（JitPack / GitHub）：坐标 com.github.moweilin:flystem-spring-crud-api
-// monorepo 子模块：沿用父仓 allprojects 的 group / version（com.flystem）
-if (rootProject == project) {
-    group = "com.github.moweilin"
-    version = System.getenv("VERSION") ?: "0.1.0-SNAPSHOT"
-}
+// 独立构建 / 父仓 includeBuild / JitPack：坐标恒为 com.github.moweilin:flystem-spring-crud-api
+group = "com.github.moweilin"
+version = "0.1.1"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -55,9 +52,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
-            if (rootProject == project) {
-                artifactId = "flystem-spring-crud-api"
-            }
+            artifactId = "flystem-spring-crud-api"
         }
     }
 }

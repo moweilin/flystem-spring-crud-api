@@ -3,6 +3,7 @@ package com.flystem.crud.api.annotation;
 import com.flystem.crud.api.enums.GenerationMode;
 import com.flystem.crud.api.enums.PackageLayout;
 import com.flystem.crud.api.enums.TenantIdType;
+import com.flystem.crud.api.id.IdGenerator;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,12 +18,12 @@ import org.springframework.security.core.userdetails.UserDetails;
  * <p>配置分三组组织：实体范围圈定——{@code scanPackage} / {@code includes} /
  * {@code excludes}（包级独有，参与集 = 包扫描集（本包及子孙包，可关）∪ 白名单 − 黑名单，
  * {@link Domain} 无此三键）；跨层全局项——生成范围、实体根包、
- * 产物包布局、命名前缀（从粗到细：先定生成面，再定包结构与类命名），以及两项<b>包级独有</b>的领域
- * 全局项——全局租户值类型（{@code tenantIdType}，全项目唯一）与用户主体类型（{@code principalClass}，端点
- * 与 Service 方法的用户参数类型，ADR 0018）——为本注解的直接属性；每个产物层有独立配置注解（如
- * {@link ControllerGeneration}），作为对应属性嵌套其中，声明该层的裁剪（是否生成）与
- * api/impl 归属；层专属选项作为层配置的内部嵌套子配置承载（如 Controller 层的
- * {@code security}），随产物细节在后续工作包补充。层属性按请求链排序——暴露入口
+ * 产物包布局、命名前缀、主键生成器（从粗到细：先定生成面，再定包结构与类命名，再定 create
+ * 时主键来源），以及两项<b>包级独有</b>的领域全局项——全局租户值类型（{@code tenantIdType}，全项目
+ * 唯一）与用户主体类型（{@code principalClass}，端点与 Service 方法的用户参数类型，ADR 0018）——为本
+ * 注解的直接属性；每个产物层有独立配置注解（如 {@link ControllerGeneration}），作为对应属性嵌套
+ * 其中，声明该层的裁剪（是否生成）与 api/impl 归属；层专属选项作为层配置的内部嵌套子配置承载（如
+ * Controller 层的 {@code security}），随产物细节在后续工作包补充。层属性按请求链排序——暴露入口
  * 与入参（controller / form / mcp / admin / guest）→ 业务（service / serviceImpl）→ 数据访问（dataAccess）
  * → 数据形态与转换（dto / mapStruct）→ 装配（springAutoConfiguration）。
  *
@@ -65,6 +66,16 @@ public @interface CrudGeneration {
 
     /** 命名前缀：全部产物层类名统一携带（如 {@code FUserService}），可置空串关闭（ADR 0016）。 */
     String prefix() default "F";
+
+    /**
+     * 主键生成器 bean 类型（可被 {@link Domain#idGenerator} 覆盖）：默认 {@link Void} = <b>由框架
+     * / 数据库自生成</b>（产物不注入、create 不赋值，交给 MyBatis-Plus 雪花 / {@code ASSIGN_UUID}
+     * 等）。配实现 {@link IdGenerator} 的类（或接口本身）时，ServiceImpl 注入该类型 bean，create
+     * 在实体 id 为空时调用 {@link IdGenerator#nextId(Class)}。库提供 {@code UuidIdGenerator} 与
+     * {@code UuidV7IdGenerator}（仅当 classpath 有 uuid-creator 的 {@code UuidCreator} 时可用），
+     * 见 ADR 0026。
+     */
+    Class<?> idGenerator() default Void.class;
 
     /**
      * 全局租户值类型（<b>包级独有</b>，{@link Domain} 无此键、不可按实体覆盖）：默认
